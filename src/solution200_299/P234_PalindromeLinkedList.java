@@ -12,6 +12,9 @@ public class P234_PalindromeLinkedList {
 	}
 	
 	public boolean isPalindrome(ListNode head) {
+		
+		
+		
         return false;
     }
 }
