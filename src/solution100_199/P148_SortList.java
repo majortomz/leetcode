@@ -1,7 +1,5 @@
 package solution100_199;
 
-import java.awt.RenderingHints;
-
 public class P148_SortList {
 	private class ListNode {
 		int val;
@@ -29,25 +27,39 @@ public class P148_SortList {
 			slow = slow.next;
 			fast = fast.next.next;
 		}
+		slow = slow.next;
 		ListNode left = mergesortList(start, slow);
 		ListNode right = mergesortList(slow, end);
 		ListNode result = new ListNode(0), cur = result;
-		while (left != null || right != null) {
-			if (left == null || (right != null && left.val > right.val)) {
+		while (left != null && right != null) {
+			if (left.val > right.val) {
 				cur.next = right;
 				right = right.next;
-			}
-			else if (right == null || (left != null && right.val > left.val)) {
+			} else {
 				cur.next = left;
 				left = left.next;
-			} 
+			}
 			cur = cur.next;
+		}
+		if(left == null){
+			cur.next = right;
+		}
+		if(right == null){
+			cur.next = left;
 		}
 		return result.next;
 	}
 
+	public void print(ListNode head) {
+		while (head != null) {
+			System.out.print(head.val + ", ");
+			head = head.next;
+		}
+		System.out.println();
+	}
+
 	public static void main(String[] args) {
-		int[] test = { 1, 2, 3, 4, 5 };
+		int[] test = { 4, 19, 14, 5, -3, 1, 8, 5, 11, 15 };
 		P148_SortList ps = new P148_SortList();
 		ListNode head = ps.new ListNode(test[0]), curNode;
 		curNode = head;

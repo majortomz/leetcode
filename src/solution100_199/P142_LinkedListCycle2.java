@@ -1,7 +1,6 @@
 package solution100_199;
 
 import java.util.HashSet;
-import java.util.List;
 
 public class P142_LinkedListCycle2 {
 	// ListNode 的定义
