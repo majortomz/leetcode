@@ -13,10 +13,7 @@ public class P539_MinimumTimeDifference {
 			String[] ts = timePoints.get(i).split(":");
 			h = Integer.valueOf(ts[0]);
 			m = Integer.valueOf(ts[1]);
-			if (h == 0 && m == 0)
-				times[i] = 24 * 60;
-			else
-				times[i] = h * 60 + m;
+			times[i] = h * 60 + m;
 			min = times[i]<min?times[i]:min;
 		}
 		Arrays.sort(times, 0, len);
