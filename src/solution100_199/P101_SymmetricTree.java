@@ -16,7 +16,7 @@ public class P101_SymmetricTree {
         }
     }
 
-    // Solution 1: using queue and stack, Memory Limit Exceed
+    // Solution 1: using queue and stack, Memory Limit Exceed, TLE
     public boolean isSymmetric(TreeNode root) {
         Stack<TreeNode> stack = new Stack<TreeNode>();
         Queue<TreeNode> queue = new LinkedList<>();
@@ -48,31 +48,42 @@ public class P101_SymmetricTree {
         return true;
     }
 
-    // Solution 2
+    // Solution 2, using two queue:left queue and right queue
     public boolean isSymmetric2(TreeNode root) {
-        List<Integer> list = new ArrayList<>();
-        traverse(root, list);
-        int size = list.size() / 2;
-        for (int i = 0; i < size; i++) {
-            int pos = list.size() - i - 1;
-            if ((list.get(i) == null && list.get(pos) == null) ||
-                    (list.get(i)!= null && list.get(i).equals(list.get(pos))) )
-                continue;
-            else
-                return false;
+        if(root == null)    return true;
+        Queue<TreeNode> leftQ = new LinkedList<>(), rightQ = new LinkedList<>();
+        leftQ.add(root.left);
+        rightQ.add(root.right);
+        while(!leftQ.isEmpty()) {
+            int size = leftQ.size();
+            for(int i=1; i<=size; i++) {
+                TreeNode lt = leftQ.poll(), rt = rightQ.poll();
+                if(lt == null && rt == null)
+                    continue;
+                else if(lt == null || rt == null || lt.val != rt.val)
+                    return false;
+                leftQ.add(lt.left);
+                leftQ.add(lt.right);
+                rightQ.add(rt.right);
+                rightQ.add(rt.left);
+            }
         }
         return true;
     }
 
-    public void traverse(TreeNode root, List<Integer> list) {
-        if (root == null) {
-            list.add(null);
-        } else if (root.left == null && root.right == null) {
-            list.add(root.val);
-        } else {
-            traverse(root.left, list);
-            list.add(root.val);
-            traverse(root.right, list);
-        }
+    // Solution 3: from leetcode discussion, recursive version
+    public boolean isSymmetric3(TreeNode root) {
+        if(root == null)    return true;
+        return help(root.left, root.right);
+    }
+
+    // 首先左右子树的根节点同为null或值相等
+    // 接着要比较left_child->left_subtree 和 right_child->right_subtree对称
+    // 以及left_child->right_subtree 和 right_child->left_subtree对称
+    public boolean help(TreeNode lt, TreeNode rt) {
+        if(lt == null && rt == null)    return true;
+        if(lt == null || rt == null || lt.val != rt.val)
+            return false;
+        return help(lt.left, rt.right) && help(lt.right, rt.left);
     }
 }
