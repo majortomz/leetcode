@@ -7,7 +7,7 @@ public class P124_BTMaxPathSum {
     // Binary Tree Maximum Path sum, pay attention to negative node value
 
     int max = Integer.MIN_VALUE;
-    // Adjusted Code
+    // Adjusted Code, AC
     public int maxPathSum(TreeNode root) {
         if(root == null)    return 0;
         helper(root);
