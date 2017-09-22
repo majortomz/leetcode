@@ -7,7 +7,7 @@ public class P13_RomanToInteger {
 	public int romanToInt(String s) {
 		char[] rc = {'I', 'V', 'X', 'L', 'C', 'D', 'M'};
 		int[] rv = {1, 5, 10, 50, 100, 500, 1000};
-		HashMap<Character, Integer> hm = new HashMap<Character, Integer>();
+		HashMap<Character, Integer> hm = new HashMap<>();
 		for(int i=0; i<rc.length; i++)
 			hm.put(rc[i], rv[i]);
 		
