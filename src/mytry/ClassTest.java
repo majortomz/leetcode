@@ -1,4 +1,4 @@
-
+package mytry;
 
 class Small {
 		int x = 0;
