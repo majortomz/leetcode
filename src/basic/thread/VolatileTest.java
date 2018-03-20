@@ -1,4 +1,4 @@
-package jvm.thread;
+package basic.thread;
 
 /**
  * Created by zjw on 2017/12/7.
