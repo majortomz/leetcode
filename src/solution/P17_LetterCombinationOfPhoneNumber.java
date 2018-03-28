@@ -26,6 +26,31 @@ public class P17_LetterCombinationOfPhoneNumber {
         }
         return result;
     }
+
+	private class Solution2 {
+		String[][] sa = {{"a", "b", "c"}, {"d", "e", "f"}, {"g", "h", "i"},
+				{"j", "k", "l"}, {"m", "n", "o"}, {"p", "q", "r", "s"},
+				{"t", "u", "v"}, {"w", "x", "y", "z"}};
+
+		public List<String> letterCombinations(String digits) {
+			List<String>  res = new ArrayList<>();
+			if(digits == null || digits.length() == 0)  return res;
+			helper(res, "", digits.toCharArray(), 0);
+			return res;
+		}
+
+		public void helper(List<String> res, String prefix, char[] digits, int start) {
+			if(start >= digits.length)  {
+				res.add(prefix);
+				return;
+			}
+			int k = digits[start] - '0';
+			k -= 2;
+			for(String next : sa[k]) {
+				helper(res, prefix + next, digits, start + 1);
+			}
+		}
+	}
 	
 	public static void main(String[] args){
 		String[] test_case = {"0", "91", "23"};
