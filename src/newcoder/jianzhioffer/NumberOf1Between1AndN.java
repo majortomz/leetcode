@@ -6,23 +6,33 @@ package newcoder.jianzhioffer;
  */
 public class NumberOf1Between1AndN {
 
-    public int NumberOf1Between1AndN_Solution(int n) {
+    public static int NumberOf1Between1AndN_Solution(int n) {
+
         if(n <= 0)    return 0;
         else if(n == 1)    return 1;
-        int res = 0, sum = 0;
+        int b = n % 10;
+        n /= 10;
+        int res = b >= 1 ? 1 : 0, tmpRes = 1, count = 10, tmpCount = b;
+        int bit = 1;
         while(n > 0) {
-            int b = n % 10;
-            if(b == 0) {
-                res = sum;
-            } else if(b == 1) {
-                res = sum + sum * res;
-            } else {
-                res = (b - 2) * sum + 2 * sum + res;
+            b = n % 10;
+            if (b == 1) {
+                res = tmpRes + res + tmpCount + 1;
+            } else if(b > 1) {
+                res = b * tmpRes + count + res;
             }
-            sum *= 11;
+            tmpRes = tmpRes * 10 + count;
+            tmpCount = (int)Math.pow(10, bit++) * b + tmpCount;
+            count *= 10;
             n /= 10;
+            System.out.printf("%d %d %d %d\n", res, tmpRes, count, tmpCount);
         }
         return res;
+
+    }
+
+    public static void main(String[] args) {
+        NumberOf1Between1AndN_Solution(21345);
     }
 
 }

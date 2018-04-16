@@ -14,6 +14,8 @@ public class HelloWorld {
 	public static void main(String[] args) {
 
 		Scanner scanner = new Scanner(System.in);
+		new LinkedList<>();
+		new ArrayList<>();
 		TreeMap<Integer, Integer> treeMap = new TreeMap<>();
 		new Hashtable<>();
 		Map<String, String> hashMap = new HashMap<>();

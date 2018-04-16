@@ -30,5 +30,4 @@ public class P198_HourseRobber {
         return Math.max(rob, notrob);
     }
 
-
 }
