@@ -41,4 +41,25 @@ public class P300_LongestIncreasingSubseq {
         return size;
     }
 
+    public int lengthOfLIS3(int[] nums) {
+        if(nums == null || nums.length == 0)    return 0;
+        int[] dp = new int[nums.length];
+        int size = 0;
+        for(int i = 0; i < nums.length; i++) {
+
+            int lt = 0, rt = size - 1;
+            while(lt <= rt) {
+                int mid = (rt - lt) / 2 + lt;
+                if(nums[i] <= dp[mid]) {
+                    rt = mid - 1;
+                } else {
+                    lt = mid + 1;
+                }
+            }
+            dp[lt] = nums[i];
+            if(lt == size)  size++;
+        }
+        return size;
+    }
+
 }

@@ -49,6 +49,25 @@ public class P96_UniqueBST {
         return result;
     }
 
+    // solution 3
+    public int numTrees3(int n) {
+        int[][] mat = new int[n][n];
+
+        for(int i = 0; i < n; i++) {
+            mat[i][i] = 1;
+        }
+
+        for(int len = 2; len <= n; len++) {
+            for(int i = n - len;  i >= 0; i--) {
+                int j = i + len - 1;
+                for(int k = i; k <= j; k++) {
+                    mat[i][j] += (i == k ? 1 : mat[i][k - 1]) * (j == k ? 1 : mat[k + 1][j]);
+                }
+            }
+        }
+        return mat[0][n - 1];
+    }
+
     public int main(String[] args) {
         P96_UniqueBST uni = new P96_UniqueBST();
         System.out.println(uni.numTrees(19));

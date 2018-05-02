@@ -1,6 +1,7 @@
 import java.lang.*;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.Executors;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -22,5 +23,6 @@ public class HelloWorld {
 		Map<String, String> linkedMap = new LinkedHashMap<>();
 		Map<String, String> cMap = new ConcurrentHashMap<>();
 		System.out.println("Hello, world!");
+		Executors.newFixedThreadPool(1);
 	}
 }

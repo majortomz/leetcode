@@ -1,6 +1,8 @@
 package solution100_199;
 
+import java.util.ArrayDeque;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -54,6 +56,45 @@ public class P131_PalindromePartitioning {
             path.add(curStr);
             helper(res, str, path, palindromeList, lt + 1);
             path.remove(path.size() - 1);
+        }
+    }
+
+    private class Solution2 {
+
+        boolean[][] dp;
+
+        public List<List<String>> partition(String s) {
+            char[] words = s.toCharArray();
+            int n = s.length();
+            dp = new boolean[n][n];
+
+            for(int j = 0; j < n; j++) {
+                for(int i = 0; i <= j; i++) {
+                    if(words[i] == words[j] && (j - i <= 2 || dp[i + 1][j - 1])) {
+                        dp[i][j] = true;
+                    }
+                }
+            }
+
+            List<List<String>> res = new ArrayList<>();
+            helper(s, 0, new ArrayList<>(), res);
+            return res;
+        }
+
+        private void helper(String s, int start, List<String> path, List<List<String>> res) {
+            if(start >= s.length()) {
+                res.add(new ArrayList<>(path));
+            }
+
+            for(int i = start; i < s.length(); i++) {
+                if(dp[start][i]) {
+                    String head = s.substring(start, i + 1);
+                    path.add(head);
+                    helper(s, i + 1, path, res);
+                    path.remove(path.size() - 1);
+                }
+            }
+
         }
     }
 

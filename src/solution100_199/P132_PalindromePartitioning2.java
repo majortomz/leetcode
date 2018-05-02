@@ -22,7 +22,6 @@ public class P132_PalindromePartitioning2 {
         }
         helper(cuts, dp, 0);
         return cuts[0];
-
     }
 
     public void helper(int[] cuts, boolean[][] dp, int start) {

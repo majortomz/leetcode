@@ -55,7 +55,7 @@ public class P32_LongestValidParentheses {
 		return max;
 	}
 	
-	// 动态规划，类似于解决矩阵链乘的方法
+	// 动态规划，类似于解决矩阵链乘的方法, TLE
 	public int longestValidParentheses2(String s) {
 		int[][] mat = new int[s.length()][s.length()];
 		int max = 0;
