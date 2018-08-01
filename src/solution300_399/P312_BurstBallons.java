@@ -7,7 +7,7 @@ package solution300_399;
 public class P312_BurstBallons {
 
     public int maxCoins(int[] nums) {
-
+        return 0;
     }
 
 }

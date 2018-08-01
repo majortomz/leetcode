@@ -38,6 +38,85 @@ public class P307_RangeSumQueryMutable {
             return sums[j] - (i == 0 ? 0 : sums[i-1]);
         }
     }
+
+    class Solution2 {
+        class NumArray {
+            TreeNode root;
+
+            class TreeNode {
+                TreeNode left, right;
+                int sum;
+                int start, end;
+            }
+
+            private TreeNode buildTree(int[] nums, int start, int end) {
+                if(start > end) {
+                    return null;
+                }
+                TreeNode node = new TreeNode();
+                node.start = start;
+                node.end = end;
+                if(start == end) {
+                    node.sum = nums[start];
+                } else {
+                    int mid = start + (end - start) / 2;
+                    node.left = buildTree(nums, start, mid);
+                    node.right = buildTree(nums, mid + 1, end);
+                    node.sum = node.left.sum + node.right.sum;
+                }
+                return node;
+            }
+
+            public NumArray(int[] nums) {
+                this.root = buildTree(nums, 0, nums.length - 1);
+            }
+
+            public void update(int i, int val) {
+                updateHelper(root, i, val);
+            }
+
+            private void updateHelper(TreeNode cur, int i, int val) {
+                if(cur == null || i < cur.start || i > cur.end) {
+                    return;
+                }
+
+                if(cur.start == cur.end) {
+                    cur.sum = val;
+                } else {
+                    int mid = cur.start + (cur.end - cur.start) / 2;
+                    if(i <= mid) {
+                        updateHelper(cur.left, i, val);
+                    } else {
+                        updateHelper(cur.right,  i, val);
+                    }
+                    cur.sum = (cur.left == null ? 0 : cur.left.sum) + (cur.right == null ? 0 : cur.right.sum);
+                }
+            }
+
+            public int sumRange(int i, int j) {
+                return sumRangeHelper(root, i, j);
+            }
+
+            private int sumRangeHelper(TreeNode cur, int i, int j) {
+                if(cur == null || i < cur.start || j > cur.end) {
+                    return 0;
+                }
+
+                if(i == cur.start && j == cur.end) {
+                    return cur.sum;
+                } else {
+                    int mid = cur.start + (cur.end - cur.start) / 2;
+                    if(mid >= j) {
+                        return sumRangeHelper(cur.left, i, j);
+                    } else if(mid < i) {
+                        return sumRangeHelper(cur.right, i , j);
+                    } else {
+                        return sumRangeHelper(cur.left, i, mid) + sumRangeHelper(cur.right, mid + 1, j);
+                    }
+                }
+            }
+        }
+    }
 }
 
 // SegmentTree

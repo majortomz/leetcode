@@ -14,15 +14,21 @@ public class HelloWorld {
 
 	public static void main(String[] args) {
 
-		Scanner scanner = new Scanner(System.in);
+//		Scanner scanner = new Scanner(System.in);
 		new LinkedList<>();
 		new ArrayList<>();
-		TreeMap<Integer, Integer> treeMap = new TreeMap<>();
-		new Hashtable<>();
+//		TreeMap<Integer, Integer> treeMap = new TreeMap<>();
+//		new Hashtable<>();
 		Map<String, String> hashMap = new HashMap<>();
-		Map<String, String> linkedMap = new LinkedHashMap<>();
+//		Map<String, String> linkedMap = new LinkedHashMap<>();
 		Map<String, String> cMap = new ConcurrentHashMap<>();
-		System.out.println("Hello, world!");
-		Executors.newFixedThreadPool(1);
+//		System.out.println("Hello, world!");
+//		Executors.newFixedThreadPool(1);
+
+		String str1 = new StringBuilder("计算机").append("软件").toString();
+		System.out.println(str1.intern() == str1);
+
+		String str2 = new StringBuilder("ja").append("va").toString();
+		System.out.println(str2.intern() == str2);
 	}
 }
