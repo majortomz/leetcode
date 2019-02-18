@@ -30,5 +30,11 @@ public class HelloWorld {
 
 		String str2 = new StringBuilder("ja").append("va").toString();
 		System.out.println(str2.intern() == str2);
+
+		Executors.newFixedThreadPool(5);
+		Executors.newScheduledThreadPool(5);
+
+		Set<?> set = new HashSet<Integer>();
+		set.add(null);
 	}
 }

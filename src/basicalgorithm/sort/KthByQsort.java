@@ -35,7 +35,7 @@ public class KthByQsort {
     }
 
     public static void main(String[] args) {
-        for(int k = 1; k < 10; k++) {
+        for(int k = 1; k <= 10; k++) {
             int[] test = {5, 4, 3, 10, 2, 64, 532, 5, 17, 99};
             System.out.println(KthByQsort.select(test, k));
         }

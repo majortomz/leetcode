@@ -10,6 +10,10 @@ public class SingletonF {
         private static SingletonF singleton = new SingletonF();
     }
 
+    private SingletonF() {
+
+    }
+
     public SingletonF getInstance() {
         return Holder.singleton;
     }
