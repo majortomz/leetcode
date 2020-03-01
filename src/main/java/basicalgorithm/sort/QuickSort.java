@@ -24,14 +24,17 @@ public class QuickSort {
         for(int j = lt; j <= rt - 1; j++) {
             if(a[j] <= x) {
                 i += 1;
-                int tmp = a[i];
-                a[i] = a[j];
-                a[j] = tmp;
+                swap(a, i, j);
             }
         }
-        a[rt] = a[i + 1];
-        a[i + 1] = x;
+        swap(a, i + 1, rt);
         return i + 1;
+    }
+
+    private static void swap(int[] a, int i, int j) {
+        int tmp = a[i];
+        a[i] = a[j];
+        a[j] = tmp;
     }
 
     public static void main(String[] args) {
