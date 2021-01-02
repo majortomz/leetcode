@@ -40,4 +40,5 @@ hs_err_pid*
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+bin
 
