@@ -4,7 +4,7 @@ package newcoder.jianzhioffer;
  * Created by zjw on 2018/03/01 16:13
  * Description: 旋转数组的最小数字
  */
-public class MinNumberInRotateArray {
+public class Z06_MinNumberInRotateArray {
 
     public int minNumberInRotateArray(int[] array) {
         if (array == null || array.length == 0) return 0;

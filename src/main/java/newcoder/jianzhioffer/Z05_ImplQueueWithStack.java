@@ -6,7 +6,7 @@ import java.util.Stack;
  * Created by zjw on 2018/03/01 16:06
  * Description:
  */
-public class ImplQueueWithStack {
+public class Z05_ImplQueueWithStack {
 
     Stack<Integer> stack1 = new Stack<Integer>();
     Stack<Integer> stack2 = new Stack<Integer>();

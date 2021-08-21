@@ -4,7 +4,7 @@ package newcoder.jianzhioffer;
  * Created by zjw on 2018/03/01 15:31
  * Description: 二维数组中的查找
  */
-public class SearchInMatrix {
+public class Z01_SearchInMatrix {
 
     public boolean Find(int target, int [][] array) {
         if(array == null || array.length == 0 || array[0].length == 0)    return false;

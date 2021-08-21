@@ -4,7 +4,7 @@ package newcoder.jianzhioffer;
  * Created by zjw on 2018/03/02 10:38
  * Description: 变态跳台阶
  */
-public class JumpFloor2 {
+public class Z09_JumpFloor2 {
 
     class Solution2 {
         public int JumpFloorII(int target) {
@@ -31,7 +31,7 @@ public class JumpFloor2 {
 
 
     public static void main(String[] args) {
-        JumpFloor2 jump = new JumpFloor2();
+        Z09_JumpFloor2 jump = new Z09_JumpFloor2();
         jump.JumpFloorII(4);
     }
 }

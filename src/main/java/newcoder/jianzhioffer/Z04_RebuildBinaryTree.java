@@ -4,7 +4,7 @@ package newcoder.jianzhioffer;
  * Created by zjw on 2018/03/01 15:51
  * Description:
  */
-public class RebuildBinaryTree {
+public class Z04_RebuildBinaryTree {
 
     public class TreeNode {
         int val;
