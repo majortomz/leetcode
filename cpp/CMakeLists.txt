@@ -7,4 +7,4 @@ if(WIN)
     set(CMAKE_LEGACY_CYGWIN_WIN32 0)
 endif()
 
-add_executable(Solution1 leetcode0_99/Solution1.cpp)
+add_executable(Solution1 leetcode200_299/Solution206.cpp)
