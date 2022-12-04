@@ -1,21 +1,33 @@
 package basicalgorithm.tree;
 
-import lombok.Getter;
-import lombok.Setter;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Created by zjw on 2021/04/11 20:01
  * Description: 红黑树实现
  * 红黑树性质：
+ * - 每个节点是红色或者黑色
+ * - 根节点是黑色的
+ * - 每个叶子节点(NIL) 是黑色的
+ * - 如果一个节点是红色的，则他的两个子节点都是黑色的
+ * - 对每个节点，从改节点到其所有后代叶节点的简单路基ing上，据包含相同数目的黑色节点。
+ *
+ * 不考虑插入重复key的情况
  */
 public class RBTree {
 
     private TreeNode root;
-    private final TreeNode NIL = new TreeNode(null, null, null, Color.BLACK, 0);
+    private final TreeNode NIL = new TreeNode(null, null, null, TreeNode.Color.BLACK, -1);
 
+    private Set<Integer> nodeSet = new HashSet<>();
+
+    public RBTree() {
+        root = NIL;
+    }
 
     public void insert(int key) {
-
+        insertNode(new TreeNode(NIL, NIL, NIL, null, key));
     }
 
     private void insertNode(TreeNode node) {
@@ -39,53 +51,54 @@ public class RBTree {
         }
         node.left = NIL;
         node.right = NIL;
-        node.color = Color.RED;
-
+        node.color = TreeNode.Color.RED;
+        insertFixUp(node);
     }
 
     private void insertFixUp(TreeNode node) {
-        while (node.parent.color == Color.RED) {
+        while (node.parent.color == TreeNode.Color.RED) {
             // node.parent.parent 一定不为NIL
             // node.parent.parent.color 一定为黑色
             if (node.parent == node.parent.parent.left) {
+                // y is node's uncle (parent's sibling)
                 TreeNode y = node.parent.parent.right;
-                if (y.color == Color.RED) {              // case 1
-                    node.parent.color = Color.BLACK;
-                    y.color = Color.BLACK;
-                    node.parent.parent.color = Color.RED;
+                if (y.color == TreeNode.Color.RED) {              // case 1
+                    node.parent.color = TreeNode.Color.BLACK;
+                    y.color = TreeNode.Color.BLACK;
+                    node.parent.parent.color = TreeNode.Color.RED;
                     node = node.parent.parent;
                     continue;
                 } else if (node == node.parent.right) {  // case 2
                     node = node.parent;
                     leftRotate(node);
                 }
-                node.parent.color = Color.BLACK;         // case 3
-                node.parent.parent.color = Color.RED;
+                node.parent.color = TreeNode.Color.BLACK;         // case 3
+                node.parent.parent.color = TreeNode.Color.RED;
                 rightRotate(node.parent.parent);
             } else {
                 TreeNode y = node.parent.parent.left;
-                if (y.color == Color.RED) {
-                    node.parent.color = Color.BLACK;
-                    y.color = Color.BLACK;
-                    node.parent.parent.color = Color.BLACK;
+                if (y.color == TreeNode.Color.RED) {
+                    node.parent.color = TreeNode.Color.BLACK;
+                    y.color = TreeNode.Color.BLACK;
+                    node.parent.parent.color = TreeNode.Color.RED;
                     node = node.parent.parent;
                     continue;
                 } else if (node == node.parent.left) {
                     node = node.parent;
                     rightRotate(node);
                 }
-                node.parent.color = Color.BLACK;
-                node.parent.parent.color = Color.RED;
+                node.parent.color = TreeNode.Color.BLACK;
+                node.parent.parent.color = TreeNode.Color.RED;
                 leftRotate(node.parent.parent);
             }
         }
-        root.color = Color.BLACK;
+        root.color = TreeNode.Color.BLACK;
     }
 
-    private TreeNode delete(int key) {
+    public TreeNode delete(int key) {
         TreeNode node = searchNode(key);
         if (node != null) {
-            deleteFixUp(node);
+            deleteNode(node);
         }
         return node;
     }
@@ -93,7 +106,7 @@ public class RBTree {
     private void deleteNode(TreeNode node) {
         TreeNode y = node;
         TreeNode nodeNeedFix = null;
-        Color originColor = y.color;
+        TreeNode.Color originColor = y.color;
         if (node.left == NIL) {
             nodeNeedFix = node.right;
             transPlant(node, node.right);
@@ -113,63 +126,70 @@ public class RBTree {
             }
             transPlant(node, y);
             y.left = node.left;
-            y.left.parent = y.parent;
+            y.left.parent = y;
             y.color = node.color;
         }
-        if (originColor == Color.BLACK) {
+        if (originColor == TreeNode.Color.BLACK) {
             deleteFixUp(nodeNeedFix);
         }
     }
 
     private void deleteFixUp(TreeNode node) {
-        while (node != root && node.color == Color.BLACK) {
+        while (node != root && node.color == TreeNode.Color.BLACK) {
             if (node == node.parent.left) {
                 TreeNode brother = node.parent.right;
-                if (brother.color == Color.RED) {
-                    brother.color = Color.BLACK;
-                    node.parent.color = Color.RED;
+                if (brother.color == TreeNode.Color.RED) {        // case 1
+                    brother.color = TreeNode.Color.BLACK;
+                    node.parent.color = TreeNode.Color.RED;
                     leftRotate(node.parent);
                     brother = node.parent.right;
                 }
-                if (brother.left.color == Color.BLACK && brother.right.color == Color.BLACK) {
-                    brother.color = Color.RED;
+                // here brother is black
+                if (brother.left.color == TreeNode.Color.BLACK && brother.right.color == TreeNode.Color.BLACK) {
+                    // case 2: brother's both left/right is black
+                    brother.color = TreeNode.Color.RED;
                     node = node.parent;
-                } else if (brother.right.color == Color.BLACK) {
-                    brother.left.color = Color.BLACK;
-                    brother.color = Color.RED;
+                    continue;
+                } else if (brother.right.color == TreeNode.Color.BLACK) {
+                    // case 3: brother is black, brother's left is red, right is black
+                    brother.left.color = TreeNode.Color.BLACK;
+                    brother.color = TreeNode.Color.RED;
                     rightRotate(brother);
                     brother = node.parent.right;
                 }
+                // all converted to case 4
+                // case4: brother is black and brother's right is red
                 brother.color = node.parent.color;
-                node.parent.color = Color.BLACK;
-                brother.right.color = Color.BLACK;
+                node.parent.color = TreeNode.Color.BLACK;
+                brother.right.color = TreeNode.Color.BLACK;
                 leftRotate(node.parent);
                 node = root;
             } else {
                 TreeNode brother = node.parent.left;
-                if (brother.color == Color.RED) {
-                    brother.color = Color.BLACK;
-                    node.parent.color = Color.RED;
+                if (brother.color == TreeNode.Color.RED) {
+                    brother.color = TreeNode.Color.BLACK;
+                    node.parent.color = TreeNode.Color.RED;
                     leftRotate(node.parent);
                     brother = node.parent.left;
                 }
-                if (brother.left.color == Color.BLACK && brother.right.color == Color.BLACK) {
-                    brother.color = Color.RED;
+                if (brother.left.color == TreeNode.Color.BLACK && brother.right.color == TreeNode.Color.BLACK) {
+                    brother.color = TreeNode.Color.RED;
                     node = node.parent;
-                } else if (brother.left.color == Color.BLACK) {
-                    brother.right.color = Color.BLACK;
-                    brother.color = Color.RED;
+                    continue;
+                } else if (brother.left.color == TreeNode.Color.BLACK) {
+                    brother.right.color = TreeNode.Color.BLACK;
+                    brother.color = TreeNode.Color.RED;
                     leftRotate(brother);
                     brother = node.parent.left;
                 }
                 brother.color = node.parent.color;
-                node.parent.color = Color.BLACK;
-                brother.left.color = Color.BLACK;
+                node.parent.color = TreeNode.Color.BLACK;
+                brother.left.color = TreeNode.Color.BLACK;
                 rightRotate(node.parent);
                 node = root;
             }
         }
-        node.color = Color.BLACK;
+        node.color = TreeNode.Color.BLACK;
     }
 
     private TreeNode searchNode(int key) {
@@ -191,10 +211,8 @@ public class RBTree {
             return NIL;
         }
 
-        if (treeNode.left != NIL) {
-            return minimum(treeNode.left);
-        } else if (treeNode.right != NIL) {
-            return minimum(treeNode.right);
+        while (treeNode.left != NIL) {
+            treeNode = treeNode.left;
         }
         return treeNode;
     }
@@ -265,26 +283,38 @@ public class RBTree {
         node.parent = leftSon;                      // set x's new parent
     }
 
-    @Setter
-    @Getter
-    private static class TreeNode {
-        TreeNode parent;
-        TreeNode left;
-        TreeNode right;
-        Color color;
-        int key;
-
-        public TreeNode(TreeNode parent, TreeNode left, TreeNode right, Color color, int key) {
-            this.parent = parent;
-            this.left = left;
-            this.right = right;
-            this.color = color;
-            this.key = key;
+    protected void traverse(TreeNode treeNode) {
+        if (treeNode == NIL) {
+            return;
+        }
+        traverse(treeNode.left);
+        System.out.print(" " + treeNode.key);
+        traverse(treeNode.right);
+        if (treeNode == root) {
+            System.out.println("");
         }
     }
 
-    private enum Color {
-        RED,
-        BLACK
+
+    public static void main(String[] args) {
+        RBTree rbTree = new RBTree();
+        rbTree.insert(5);
+        rbTree.insert(3);
+        rbTree.insert(1);
+        rbTree.insert(4);
+        rbTree.insert(2);
+        rbTree.insert(9);
+        rbTree.traverse(rbTree.root);
+
+        rbTree.delete(3);
+        rbTree.traverse(rbTree.root);
+
+        rbTree.delete(9);
+        rbTree.traverse(rbTree.root);
+
+        rbTree.insert(3);
+        rbTree.insert(18);
+        rbTree.insert(9);
+        rbTree.traverse(rbTree.root);
     }
 }

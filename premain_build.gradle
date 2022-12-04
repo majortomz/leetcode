@@ -8,6 +8,15 @@ repositories {
     mavenCentral()
 }
 
+jar {
+    manifest {
+        attributes 'Premain-Class': 'basic.agent.PreMainAgent',
+                   'Can-Redefine-Classes': 'true',
+                   'Can-Retransform-Classes': 'true',
+                   'Can-Set-Native-Method-Prefix': 'true'
+    }
+}
+
 dependencies {
     compile group: 'cglib', name: 'cglib', version: '3.3.0'
     compile group: 'io.netty', name: 'netty-all', version: '4.1.48.Final'
