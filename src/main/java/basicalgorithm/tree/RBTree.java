@@ -135,6 +135,7 @@ public class RBTree {
     }
 
     private void deleteFixUp(TreeNode node) {
+        // node is double black
         while (node != root && node.color == TreeNode.Color.BLACK) {
             if (node == node.parent.left) {
                 TreeNode brother = node.parent.right;
@@ -147,6 +148,9 @@ public class RBTree {
                 // here brother is black
                 if (brother.left.color == TreeNode.Color.BLACK && brother.right.color == TreeNode.Color.BLACK) {
                     // case 2: brother's both left/right is black
+                    // let node and it's brother remove one black, then node(double black) is still black, brother is red
+                    // let node's parent is double black and becomes next target.
+                    // note: case 1 -> case2, node's parent is red-black, while loop will break
                     brother.color = TreeNode.Color.RED;
                     node = node.parent;
                     continue;
@@ -157,7 +161,6 @@ public class RBTree {
                     rightRotate(brother);
                     brother = node.parent.right;
                 }
-                // all converted to case 4
                 // case4: brother is black and brother's right is red
                 brother.color = node.parent.color;
                 node.parent.color = TreeNode.Color.BLACK;
